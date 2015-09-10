@@ -1,13 +1,15 @@
-var assoc1 =    immu.assoc1;
-var clone =     immu.clone;
-var clone1 =    immu.clone1;
-var clone2 =    immu.clone2;
-var get =       immu.get;
-var getIn =     immu.getIn;
-var reduced =   immu.reduced;
-var update =    immu.update;
-var updateIn =  immu.updateIn;
-var updateIn2 = immu.updateIn2;
+var koyo = this["koyo"] || module.require('../core.js');
+
+var assoc1 =    koyo.assoc1;
+var clone =     koyo.clone;
+var clone1 =    koyo.clone1;
+var clone2 =    koyo.clone2;
+var get =       koyo.get;
+var getIn =     koyo.getIn;
+var reduced =   koyo.reduced;
+var update =    koyo.update;
+var updateIn =  koyo.updateIn;
+var updateIn2 = koyo.updateIn2;
 
 // simple object
 var obj1 = {foo: 23, bar: {baz: 24, zork: {aaa: 25}}};

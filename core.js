@@ -78,4 +78,4 @@ function reduced(arr, fun, akk, context) {
 }
 
 })(typeof module !== "undefined" && module.exports ?
-    module.exports : this["immu-js"] || (this["immu-js"] = {}));
+    module.exports : this["koyo"] || (this["koyo"] = {}));
