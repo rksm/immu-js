@@ -1,0 +1,33 @@
+{
+  "name": "immu-js",
+  "version": "0.1.0",
+  "description": "Object and collection utilities, inspired by the Clojure core API",
+  "main": "core.js",
+  "keywords": [
+    "immutable",
+    "utilties",
+    "clojure"
+  ],
+  "author": "Robert Krahn",
+  "license": "MIT",
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "lively.lang": "^0.4.4",
+    "mocha": "^2.3.2",
+    "mocha-phantomjs": "^3.6.0",
+    "phantomjs": "^1.9.7-15"
+  },
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha tests/*-test.js && node_modules/mocha-phantomjs/bin/mocha-phantomjs tests/run-tests.html"
+  },
+  "author": "Robert Krahn",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rksm/immu-js"
+  },
+  "bugs": {
+    "url": "https://github.com/rksm/immu-js/issues"
+  },
+  "homepage": "https://github.com/rksm/immu-js"
+}

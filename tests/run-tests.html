@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>immu-js Tests</title>
+    <link type="text/css" rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script type="text/javascript" src="helper.js"></script>
+    <script type="text/javascript" src="../node_modules/lively.lang/lively.lang.min.js"></script>
+    <script type="text/javascript" src="../node_modules/expect.js/index.js"></script>
+    <script type="text/javascript" src="../node_modules/mocha/mocha.js"></script>
+    <script type="text/javascript" >
+      mocha.setup("bdd");
+      mocha.globals(["jQuery", "$", "script*", "BlobBuilder"]);
+      var urls = [
+        '../core.js',
+        'core-test.js',
+      ];
+      loadUncached(urls, function() {
+        mocha.checkLeaks();
+        if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
+        else { mocha.run(); }
+      });
+    </script>
+
+  </body>
+</html>
