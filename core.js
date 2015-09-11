@@ -24,33 +24,8 @@ function clone(obj) {
   return clone;
 }
 
-function update(obj, key, updater) {
-  var cloned = clone(obj);
-  cloned[key] = updater.call(null, obj[key]);
-  return cloned;
-}
-
-function updateIn2(obj, keys, updater) {
-  if (keys.length === 0) return obj;
-  var cloned = clone(obj);
-  cloned[keys[0]] = keys.length === 1 ?
-    updater(obj[keys[0]]) :
-    updateIn2(obj[keys[0]], keys.slice(1), updater);
-  return cloned;
-}
-
-function updateIn(obj, keys, updater) {
-  var i = 0,
-      cloned = clone(obj),
-      current = obj,
-      currentClone = cloned;
-  for (; i < keys.length-1; i++) {
-    currentClone[keys[i]] = clone(current[keys[i]]);
-    current = current[keys[i]];
-    currentClone = currentClone[keys[i]];
-  }
-  currentClone[keys[i]] = updater(current[keys[i]]);
-  return cloned;
+function values(obj) {
+  return Object.keys(obj).map(function(k) { return obj[k]; });
 }
 
 function get(obj, key) { return obj[key]; }
@@ -63,9 +38,66 @@ function getIn(obj, keys) {
   return current;
 }
 
+function assoc(obj, key, val) {
+  var cloned = clone(obj);
+  cloned[key] = val;
+  return cloned;
+}
+
+function assocIn(obj, keys, val) {
+  return updateIn(obj, keys, function(o) { return val; });
+}
+
+function update(obj, key, updater) {
+  var cloned = clone(obj);
+  cloned[key] = updater.call(null, obj[key]);
+  return cloned;
+}
+
+function updateIn(obj, keys, updater) {
+  var i = 0,
+      cloned = clone(obj),
+      current = cloned, val;
+  for (var val; i < keys.length-1; i++) {
+    val = current[keys[i]];
+    if (isPrimitive(val)) val = {};
+    else val = clone(val);
+    current[keys[i]] = val;
+    current = val;
+  }
+  current[keys[i]] = updater(current[keys[i]]);
+  return cloned;
+}
+
+function merge(obj1, obj2) {
+  var clone = {};
+  for (var key in obj1) {
+    if (obj1.hasOwnProperty(key)) clone[key] = obj1[key];
+  }
+  for (var key in obj2) {
+    if (obj2.hasOwnProperty(key)) clone[key] = obj2[key];
+  }
+  return clone;
+}
+
+function mergeWith(obj1, obj2, fun) {
+  var clone = {};
+  for (var key in obj1) {
+    if (obj1.hasOwnProperty(key)) clone[key] = obj1[key];
+  }
+  for (var key in obj2) {
+    if (obj2.hasOwnProperty(key)) {
+      clone[key] = key in clone ?
+        fun(key, obj2[key], clone[key]) : clone[key] = obj2[key]
+    }
+  }
+  return clone;
+}
+
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 exports.reduced = reduced;
+exports.distinct = distinct;
 
 function reduced(arr, fun, akk, context) {
   var results = [];
