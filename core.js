@@ -121,5 +121,24 @@ function reduced(arr, fun, akk, context) {
   return results;
 }
 
-})(typeof module !== "undefined" && module.exports ?
-    module.exports : this["koyo"] || (this["koyo"] = {}));
+function distinct(arr) {
+  if (arr.length < 300) {
+    var seen = [];
+    return arr.filter(function(ea) {
+      var uniq = seen.indexOf(ea) === -1;
+      if (!uniq) return false;
+      seen.push(ea);
+      return true;
+    });
+  } else {
+    var seen = new Map();
+    return arr.filter(function(ea) {
+      if (seen.has(ea)) return false;
+      seen.set(ea, true);
+      return true;
+    });
+  }
+}
+
+})(typeof exports !== "undefined" ?
+    exports : this["koyo"] || (this["koyo"] = {}));
