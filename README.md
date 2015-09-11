@@ -11,7 +11,7 @@ Not a [forest](https://github.com/swannodette/mori), not even a
 
 Kōyō provides a minimal set of a Clojure-inspired functional API for working with JavaScript objects and collections in a pure (= immutable) functional style.  It is focused on simplicity, efficiency, and small footprint.  Most functions and methods provided by JavaScript (ES3, ES5, ES6) itself are often based on changing (= "mutating") existing objects.  This makes writing pure functions much harder that it needs to be.
 
-Note that #[mori](https://github.com/swannodette/mori) has a very similar goal.  Using it, however, introduces new data and collection types.  If you don't need persistent data structures but want to work with normal JS objects and arrays in a functional style, look no further.  If you want a larger set of features for adding FP to JavaScript check out mori, #[Ramda](http://ramdajs.com/), #[Immutable](https://facebook.github.io/immutable-js/), or #[Underscore](http://underscorejs.org/) / #[lodash](https://lodash.com/).
+Note that [mori](https://github.com/swannodette/mori) has a very similar goal.  Using it, however, introduces new data and collection types.  If you don't need persistent data structures but want to work with normal JS objects and arrays in a functional style, look no further.  If you want a larger set of features for adding FP to JavaScript check out mori, [Ramda](http://ramdajs.com/), [Immutable](https://facebook.github.io/immutable-js/), or [Underscore](http://underscorejs.org/) / [lodash](https://lodash.com/).
 
 
 ## API
