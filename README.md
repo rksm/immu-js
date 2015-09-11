@@ -1,6 +1,6 @@
 # Kōyō [![Build Status](https://travis-ci.org/rksm/koyo.svg?branch=master)](https://travis-ci.org/rksm/koyo)
 
-<a data-flickr-embed="true"  href="https://www.flickr.com/photos/zoonyzoozoodazoo/7024866637/in/photolist-bGLh7i-hGvkK9-aoLx7-5QUFWb-65LNS-aVYRS-992Pf8-fPJinw-94P1KG-8Rsbp-aVYQX-aKqXNB-9dTBnh-qqv35f-qqv2yA-aTxBgX-94KSoM-65LT5-65LR7-fPHQey-hxWycX-aFTgk-bVSYZ-995Xx3-aU3tJV-4aQvHW-995YoJ-i1EW5L-nTvnpH-nTvnq4-nBiZyo-nBiUsH-nBjQeD-nBjQei-nBjeYC-nRL5mm-8zVHXJ-8zSxBX-7jU7Fj-7f63ng-992RSg-995US5-995QVG-3mtAJ-3mtzL-7jUah1-992JJk-i1FmmH-fPrymt-akYxi" title="Japan 2011 4"><img src="https://farm8.staticflickr.com/7225/7024866637_3d7f1a1d67_m.jpg" width="240" height="160" alt="Japan 2011 4"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<a href="https://www.flickr.com/photos/zoonyzoozoodazoo/7024866637/in/photolist-bGLh7i-hGvkK9-aoLx7-5QUFWb-65LNS-aVYRS-992Pf8-fPJinw-94P1KG-8Rsbp-aVYQX-aKqXNB-9dTBnh-qqv35f-qqv2yA-aTxBgX-94KSoM-65LT5-65LR7-fPHQey-hxWycX-aFTgk-bVSYZ-995Xx3-aU3tJV-4aQvHW-995YoJ-i1EW5L-nTvnpH-nTvnq4-nBiZyo-nBiUsH-nBjQeD-nBjQei-nBjeYC-nRL5mm-8zVHXJ-8zSxBX-7jU7Fj-7f63ng-992RSg-995US5-995QVG-3mtAJ-3mtzL-7jUah1-992JJk-i1FmmH-fPrymt-akYxi" title="Japan 2011 4" target="_blank"><img src="https://farm8.staticflickr.com/7225/7024866637_3d7f1a1d67.jpg" width="500" height="333" alt="Japan 2011 4"></a>
 
 <sub>Photo by <a href="">zoonyzoozoodazoo</a> / <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY</a></sub>
 
