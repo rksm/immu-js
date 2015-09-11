@@ -3,23 +3,35 @@
 
 (function(exports) {
 
-exports.clone = clone;
-exports.get = get;
-exports.getIn = getIn;
-exports.update = update;
-exports.updateIn = updateIn;
-exports.updateIn2 = updateIn2;
+exports.clone     = clone;
+exports.get       = get;
+exports.getIn     = getIn;
+exports.keys      = Object.keys;
+exports.values    = values;
+exports.update    = update;
+exports.updateIn  = updateIn;
+exports.merge     = merge;
+exports.mergeWith = mergeWith;
+exports.assoc     = assoc;
+exports.assocIn   = assocIn;
 
-function clone(obj) {
+function isPrimitive(obj) {
+  if (!obj) return true;
   switch (typeof obj) {
     case "string":
     case "number":
-    case "boolean": return obj;
+    case "boolean": return true;
   }
+  return false;
+}
 
+function clone(obj) {
+  if (isPrimitive(obj)) return obj;
+  if (Array.isArray(obj)) return obj.slice();
   var clone = {};
   for (var key in obj) {
-    if (obj.hasOwnProperty(key)) clone[key] = obj[key];
+    if (obj.hasOwnProperty(key))
+      clone[key] = obj[key];
   }
   return clone;
 }
