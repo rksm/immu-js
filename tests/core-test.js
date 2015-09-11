@@ -29,6 +29,10 @@ var assoc     = koyo.assoc;
 var reduced   = koyo.reduced;
 var assoc     = koyo.assoc;
 var assocIn   = koyo.assocIn;
+var disj      = koyo.disj;
+var disjIn    = koyo.disjIn;
+var selectKeys = koyo.selectKeys;
+var renameKeys = koyo.renameKeys;
 
 describe("obj", function() {
 
@@ -139,6 +143,39 @@ describe("obj", function() {
       expect(result[2]).to.not.be.an("array");
       expect(result[2]).eql({"1": {bar: {baz: 23}}});
       expect(result[3]).equal(undefined);
+    });
+
+  });
+
+  describe("disj", function() {
+
+    it("filters attributes", function() {
+      expect(disj({foo: 23, bar: {baz: 123}}, "bar")).eql({foo: 23});
+      expect(disj({foo: 23}, "foo")).to.not.have.own.property("foo");
+    });
+
+    it("filters attributes nested", function() {
+      expect(disjIn({foo: 23, bar: {baz: 123}}, ["bar", "baz"])).eql({foo: 23, bar: {}});
+    });
+
+  });
+
+  describe("selectKeys", function() {
+
+    it("returns subset of object", function() {
+      expect(selectKeys({foo: 23, bar: {baz: 123}, zork: 99}, ["foo", "zork"]))
+        .eql({foo: 23, zork: 99});
+    });
+
+  });
+
+  describe("renameKeys", function() {
+
+    it("renames keys...", function() {
+      expect(renameKeys(
+        {foo: 23, bar: {baz: 123}, zork: 99},
+        {"bar": "xxx", "zork": "yyy"}))
+        .eql({foo: 23, xxx: {baz: 123}, yyy: 99});
     });
 
   });

@@ -1,6 +1,3 @@
-// object:
-// merge, assoc, assoc-in, disj, disj-in, selectKeys, renameKeys
-
 (function(exports) {
 
 exports.clone     = clone;
@@ -14,6 +11,10 @@ exports.merge     = merge;
 exports.mergeWith = mergeWith;
 exports.assoc     = assoc;
 exports.assocIn   = assocIn;
+exports.disj      = disj;
+exports.disjIn    = disjIn;
+exports.selectKeys = selectKeys;
+exports.renameKeys = renameKeys;
 
 function isPrimitive(obj) {
   if (!obj) return true;
@@ -58,6 +59,41 @@ function assoc(obj, key, val) {
 
 function assocIn(obj, keys, val) {
   return updateIn(obj, keys, function(o) { return val; });
+}
+
+function disj(obj, key) {
+  var cloned = clone(obj);
+  delete cloned[key];
+  return cloned;
+}
+
+function disjIn(obj, keys) {
+  return updateIn(obj, keys.slice(0,-1), function(o) {
+    delete o[keys[keys.length-1]];
+    return o;
+  });
+}
+
+function selectKeys(obj, keys) {
+  var clone = {};
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (obj.hasOwnProperty(key))
+      clone[key] = obj[key];
+  }
+  return clone;
+}
+
+function renameKeys(obj, keysAndReplacements) {
+  var clone = {};
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      var newKey = keysAndReplacements.hasOwnProperty(key) ?
+        keysAndReplacements[key] : key;
+      clone[newKey] = obj[key];
+    }
+  }
+  return clone;
 }
 
 function update(obj, key, updater) {
