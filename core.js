@@ -1,5 +1,20 @@
 (function(exports) {
 
+exports.headerImport = headerImport;
+exports.headerGlobals = headerGlobals;
+
+function headerImport(subset) {
+  return "var " + (subset || Object.keys(exports))
+    .map(function(k) { return k + " = koyo." + k})
+    .join(",\n    ") + ";";
+}
+
+function headerGlobals() {
+  return "/*global koyo, " + Object.keys(exports).join(", ") + "*/";
+}
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 exports.clone     = clone;
 exports.get       = get;
 exports.getIn     = getIn;
@@ -15,6 +30,7 @@ exports.disj      = disj;
 exports.disjIn    = disjIn;
 exports.selectKeys = selectKeys;
 exports.renameKeys = renameKeys;
+
 
 function isPrimitive(obj) {
   if (!obj) return true;
@@ -144,8 +160,91 @@ function mergeWith(obj1, obj2, fun) {
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+exports.toArray = toArray;
+exports.range = range;
+exports.map = map;
+exports.mapcat = mapcat;
+exports.flatten = flatten;
+exports.mapKV = mapKV;
+exports.mapGet = mapGet;
+exports.mapCall = mapCall;
+exports.keep = keep;
+exports.filter = filter;
+exports.reduce = reduce;
 exports.reduced = reduced;
 exports.distinct = distinct;
+
+function toArray(iterable) {
+  // Makes JS arrays out of array like objects like `arguments` or DOM `childNodes`
+  if (!iterable) return [];
+  if (Array.isArray(iterable)) return iterable;
+  if (iterable.toArray) return iterable.toArray();
+  var length = iterable.length,
+      results = new Array(length);
+  while (length--) results[length] = iterable[length];
+  return results;
+}
+
+function range(begin, end, step) {
+  // Examples:
+  //   range(0,5) // => [0,1,2,3,4,5]
+  //   range(0,10,2) // => [0,2,4,6,8,10]
+  step = step || 1
+  var result = [];
+  for (var i = begin; i <= end; i += step)
+    result.push(i);
+  return result;
+}
+
+function map(iter, arr) {
+  return arr.map(iter);
+}
+
+function mapcat(iter, arr) {
+  return arr.reduce(function(all, ea, i) { return all.concat(iter(ea, i)); }, []);
+}
+
+function flatten(array) {
+  // Turns a nested collection into a flat one.
+  // Example:
+  // arr.flatten([1, [2, [3,4,5], [6]], 7,8])
+  // // => [1,2,3,4,5,6,7,8]
+  return array.reduce(function(flattened, value) {
+    return flattened.concat(Array.isArray(value) ?
+      flatten(value) : [value]);
+  }, []);
+}
+
+function mapKV(iter, obj) {
+  return Object.keys(obj).map(function(k, i) { return iter(k, obj[k], i); });
+}
+
+function mapGet(key, arr) {
+  return arr.map(function(ea) { return ea ? ea[key] : null; });
+}
+
+function mapCall(key, arr) {
+  return arr.map(function(ea) {
+    return ea && typeof ea[key] === 'function' ? ea[key]() : null;
+  });
+}
+
+function keep(iter, arr) {
+  return arr.reduce(function(all, ea, i) {
+    var result = iter(ea, i);
+    if (result !== null && result !== undefined && !isNaN(result))
+      all.push(result);
+    return all;
+  }, []);
+}
+
+function filter(iter, arr) {
+  return arr.filter(iter);
+}
+
+function reduce(iter, akk, arr) {
+  return arr.reduce(iter, akk);
+}
 
 function reduced(arr, fun, akk, context) {
   var results = [];
@@ -174,6 +273,71 @@ function distinct(arr) {
       return true;
     });
   }
+}
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// juxt
+// identity constantly memfn comp complement partial memoize fnil every-pred some-fn
+
+exports.comp = comp;
+exports.thread = thread;
+exports.threadSome = threadSome;
+exports.partial = partial;
+
+function comp(/*functions*/) {
+  // Composes synchronous functions:
+  // `comp(h, g, f)(arg1, arg2)` = `h(g(f(arg1, arg2)))`
+  // Example:
+    // comp(
+    //   function(x) {return x*4},
+    //   function(a,b) { return a+b; }
+    // )(3,2) // => 20
+
+  var functions = Array.prototype.slice.call(arguments);
+  return functions.reduce(
+    function(prevFunc, func) {
+      return function() {
+        return prevFunc(func.apply(this, arguments));
+      }
+    }, function(x) { return x; });
+}
+
+function thread(/*functions*/) {
+  var functions = Array.prototype.slice.call(arguments);
+  var input = functions.shift();
+  for (var i = 0; i < functions.length; i++) {
+    var fn = functions[i];
+    input = fn(input);
+  }
+  return input;
+}
+
+function threadSome(/*functions*/) {
+  var functions = Array.prototype.slice.call(arguments);
+  var input = functions.shift();
+  for (var i = 0; i < functions.length; i++) {
+    if (input === null || input === undefined || isNaN(input)) break;
+    var fn = functions[i];
+    input = fn(input);
+  }
+  return input;
+}
+
+function partial(func, arg1, arg2, argN/*func and curry args*/) {
+  // Return a version of `func` with args applied.
+  // Example:
+  // var add1 = (function(a, b) { return a + b; }).curry(1);
+  // add1(3) // => 4
+
+  if (arguments.length <= 1) return arguments[0];
+  var args = Array.prototype.slice.call(arguments),
+      func = args.shift();
+  function wrappedFunc() {
+    return func.apply(this, args.concat(Array.prototype.slice.call(arguments)));
+  }
+  wrappedFunc.isWrapper = true;
+  wrappedFunc.originalFunction = func;
+  return wrappedFunc;
 }
 
 })(typeof exports !== "undefined" ?

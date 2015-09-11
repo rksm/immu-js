@@ -26,7 +26,6 @@ var updateIn  = koyo.updateIn;
 var merge     = koyo.merge;
 var mergeWith = koyo.mergeWith;
 var assoc     = koyo.assoc;
-var reduced   = koyo.reduced;
 var assoc     = koyo.assoc;
 var assocIn   = koyo.assocIn;
 var disj      = koyo.disj;
@@ -181,11 +180,84 @@ describe("obj", function() {
   });
 });
 
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+var range = koyo.range,
+    map = koyo.map,
+    mapcat = koyo.mapcat,
+    flatten = koyo.flatten,
+    mapKV = koyo.mapKV,
+    mapGet = koyo.mapGet,
+    mapCall = koyo.mapCall,
+    keep = koyo.keep,
+    filter = koyo.filter,
+    reduce = koyo.reduce,
+    reduced = koyo.reduced;
+
+
 describe("collection", function() {
 
+  it("mapKV", function() {
+    expect(mapKV(function(k, v) { return [k,v]; }, {foo: 23, bar: 24}))
+      .eql([["foo", 23], ["bar", 24]]);
+  });
+
+  it("mapcat", function() {
+    expect(mapcat(function(ea, i) { return [ea].concat(range(0, i)); }, [1,2,3]))
+      .eql([1, 0, 2, 0, 1, 3, 0, 1, 2]);
+  });
+
+  it("mapGet", function() {
+    expect(mapGet("length", ["a", "bb", "ccc"])).eql([1, 2, 3]);
+  });
+
+  it("mapCall", function() {
+    expect(mapCall("toUpperCase", ["a", "bb", "ccc"])).eql(["A", "BB", "CCC"]);
+  });
+
+  it("keep", function() {
+    expect(keep(function(ea) { return ea % 2 === 0 ? ea : null; }, range(0,10)))
+      .eql([0, 2, 4, 6, 8, 10]);
+  });
+
   it("reduced", function() {
-    var result = reduced([1,2,3,4], function(akk, ea) { return akk + ea; }, 0);
-    expect(result).eql([1, 3, 6, 10]);
+    expect(reduced([1,2,3,4], function(akk, ea) { return akk + ea; }, 0))
+      .eql([1, 3, 6, 10]);
   });
 
 });
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+var comp = koyo.comp,
+    thread = koyo.thread,
+    threadSome = koyo.threadSome,
+    partial = koyo.partial;
+
+describe("function", function() {
+
+  function sum(a, b) { return a + b; }
+
+  it("comp", function() {
+    expect(comp(String, sum)(3, 4))
+      .equal("7");
+  });
+
+  it("thread", function() {
+    expect(
+      thread([3,4,5],
+        partial(reduce, function(sum, ea) { return sum + ea; }, 0),
+        String)
+      ).equal("12");
+  });
+
+  it("threadSome", function() {
+    expect(threadSome(-1, partial(sum, 1), String)).equal("0");
+    expect(
+      threadSome(1,
+      partial(sum, 1),
+      function(x) { return x > 3 ? x : null; },
+      String)
+    ).equal(null);
+  });
+})
+
